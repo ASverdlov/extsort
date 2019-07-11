@@ -9,6 +9,7 @@
 #include <libgen.h>
 
 using std::string;
+using std::vector;
 
 string source_dir;
 

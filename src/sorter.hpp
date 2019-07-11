@@ -7,10 +7,8 @@
 #include <cassert>
 #include <vector>
 
-using std::vector;
-
 inline void sort(Chunk from_chunk, Chunk to_chunk) {
-  vector<string> lines;
+  std::vector<string> lines;
 
   File r(from_chunk.filename, "r");
   r.seek(from_chunk.start);

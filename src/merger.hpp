@@ -10,16 +10,11 @@
 #include <unordered_map>
 #include <utility>
 
-// TODO add namespace
-using std::shared_ptr;
-using std::vector;
-using std::pair;
+using Chunks = std::vector<Chunk>;
+using ChunkLine = std::pair<std::string, int>;
 
-using Chunks = vector<Chunk>;
-using ChunkLine = pair<string, int>;
-
-using FilePointer = shared_ptr<File>;
-using FilePointers = vector<FilePointer>;
+using FilePointer = std::shared_ptr<File>;
+using FilePointers = std::vector<FilePointer>;
 
 inline void merge(Chunks& chunks, Chunk& out_chunk) {
   assert(chunks.size() > 0);
@@ -39,7 +34,7 @@ inline void merge(Chunks& chunks, Chunk& out_chunk) {
     if (chunks[id].start >= chunks[id].end)
       continue;
 
-    string line = file_ptrs[id]->readLine();
+    std::string line = file_ptrs[id]->readLine();
     ChunkLine chunkline = ChunkLine(line, id);
     chunklines.insert(chunkline);
   }
@@ -47,7 +42,7 @@ inline void merge(Chunks& chunks, Chunk& out_chunk) {
   while (!chunklines.empty()) {
     auto smallest_iter = chunklines.begin();
 
-    string line = smallest_iter->first;
+    std::string line = smallest_iter->first;
     int id = smallest_iter->second;
     FilePointer file_ptr = file_ptrs[id];
     Chunk c = chunks[id];
@@ -57,7 +52,7 @@ inline void merge(Chunks& chunks, Chunk& out_chunk) {
     // take next line in this chunk
     chunklines.erase(smallest_iter);
     if (!file_ptr->eof() && file_ptr->position() < c.end) {
-      string line = file_ptr->readLine();
+      std::string line = file_ptr->readLine();
       ChunkLine chunkline = ChunkLine(line, id);
       chunklines.insert(chunkline);
     }
