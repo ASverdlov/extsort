@@ -4,7 +4,6 @@
 #include "chunk.hpp"
 #include "file.hpp"
 
-#include <iostream> // TODO: delete
 #include <cassert>
 #include <vector>
 
@@ -18,11 +17,6 @@ inline void sort(Chunk from_chunk, Chunk to_chunk) {
   while (!r.eof() && r.pos < from_chunk.end) {
     string s = r.readLine();
     lines.push_back(s);
-  }
-  // TODO delete
-  if (r.pos != from_chunk.end) {
-    std::cerr << "r.pos " << r.pos << ", from_chunk.end: " << from_chunk.end << std::endl;
-    std::cerr << "r.eof(): " << (r.eof() ? "YES": "NO") << std::endl;
   }
   assert(r.pos == from_chunk.end);
 

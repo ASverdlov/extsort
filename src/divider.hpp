@@ -4,8 +4,6 @@
 #include "chunk.hpp"
 #include "file.hpp"
 
-#include <iostream> // TODO: delete
-
 using std::min;
 using std::string;
 using Chunks = std::vector<Chunk>;

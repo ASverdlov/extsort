@@ -37,7 +37,7 @@ File::~File() {
 }
 
 string File::createTemporary(int size) {
-    string filepath = tmpnam(nullptr); // TODO move to file.cpp
+    string filepath = tmpnam(nullptr);
     File tmp(filepath, "w");
     tmp.truncate(size);
     return filepath;

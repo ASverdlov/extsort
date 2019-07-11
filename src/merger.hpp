@@ -4,9 +4,6 @@
 #include "chunk.hpp"
 #include "file.hpp"
 
-// TODO: delete
-#include <iostream>
-
 #include <cassert>
 #include <set>
 #include <vector>
