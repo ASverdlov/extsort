@@ -5,7 +5,8 @@
 
 using std::string;
 
-struct File {
+class File {
+public:
   File(const string& filename, const char* mode);
   ~File();
 
@@ -15,17 +16,19 @@ struct File {
   string readLine();
   char read();
   void flush();
-  bool eof();
   void seek(int pos);
   void advancePast(char c);
-  int size();
   void truncate(int size);
-
   void write(const string& s);
 
-  void throw_on_libc_error(const char* errmsg);
+  bool eof() const;
+  int position() const;
+  int size() const;
 
   static const int READAHEAD = 4096;
+
+private:
+  void throw_on_libc_error(const char* errmsg);
 
   FILE* file;
   int filesize;

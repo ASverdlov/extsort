@@ -11,7 +11,7 @@ using Chunks = std::vector<Chunk>;
 inline int advancePastNewline(File& r, int startpos) {
   r.seek(startpos);
   r.advancePast('\n');
-  return r.pos;
+  return r.position();
 }
 
 inline Chunks divide(const string& filename, int chunksize) {

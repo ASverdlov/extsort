@@ -14,11 +14,11 @@ inline void sort(Chunk from_chunk, Chunk to_chunk) {
 
   File r(from_chunk.filename, "r");
   r.seek(from_chunk.start);
-  while (!r.eof() && r.pos < from_chunk.end) {
+  while (!r.eof() && r.position() < from_chunk.end) {
     string s = r.readLine();
     lines.push_back(s);
   }
-  assert(r.pos == from_chunk.end);
+  assert(r.position() == from_chunk.end);
 
   sort(lines.begin(), lines.end());
 

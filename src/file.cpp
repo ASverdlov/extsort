@@ -69,11 +69,15 @@ void File::truncate(int size) {
   this->throw_on_libc_error("File::truncate(): error during fputc()");
 }
 
-int File::size() {
+int File::position() const {
+    return this->pos;
+}
+
+int File::size() const {
   return this->filesize;
 }
 
-bool File::eof() {
+bool File::eof() const {
   return this->pos >= this->size();
 }
 

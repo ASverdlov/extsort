@@ -82,11 +82,11 @@ TEST(FileTest, ReadLine) {
 TEST(FileTest, AdvanceUntil) {
   File r(source_dir + "/assets/samplefile.txt", "r");
   r.advancePast('\n');
-  EXPECT_EQ(r.pos, 79);
+  EXPECT_EQ(r.position(), 79);
   EXPECT_EQ(r.read(), 'c');
   EXPECT_EQ(r.read(), 'o');
   r.advancePast('\n');
-  EXPECT_EQ(r.pos, 156);
+  EXPECT_EQ(r.position(), 156);
   EXPECT_EQ(r.read(), 'i');
   EXPECT_EQ(r.read(), 's');
 }

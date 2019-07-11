@@ -56,13 +56,13 @@ inline void merge(Chunks& chunks, Chunk& out_chunk) {
 
     // take next line in this chunk
     chunklines.erase(smallest_iter);
-    if (!file_ptr->eof() && file_ptr->pos < c.end) {
+    if (!file_ptr->eof() && file_ptr->position() < c.end) {
       string line = file_ptr->readLine();
       ChunkLine chunkline = ChunkLine(line, id);
       chunklines.insert(chunkline);
     }
   }
-  assert(outfile.pos <= out_chunk.end);
+  assert(outfile.position() <= out_chunk.end);
 }
 
 #endif
