@@ -15,6 +15,16 @@ struct Config {
   int merge_concurrency;
 };
 
+inline void printHelpAndExit() {
+  std::cout << "Help:" << std::endl;
+  std::cout << "--input, -i:\tinput filename path" << std::endl;
+  std::cout << "--output, -o:\tinput filename path" << std::endl;
+  std::cout << "--merge-concurrency, -m:\tmaximum number of chunks to be merged in parallel (1024 by default)" << std::endl;
+  std::cout << "--chunksize, -c:\tinitial chunks minimum size (1024 bytes by default)" << std::endl;
+
+  exit(0);
+}
+
 inline Config parseOptions(int argc, char* argv[]) {
   Config cfg;
 
@@ -37,13 +47,7 @@ inline Config parseOptions(int argc, char* argv[]) {
   while ((ch = getopt_long(argc, argv, opts, long_options, NULL)) != -1) {
     switch (ch) {
     case 'h':
-      std::cout << "Help:" << std::endl;
-      std::cout << "--input, -i:\tinput filename path" << std::endl;
-      std::cout << "--output, -o:\tinput filename path" << std::endl;
-      std::cout << "--merge-concurrency, -m:\tmaximum number of chunks to be merged in parallel (1024 by default)" << std::endl;
-      std::cout << "--chunksize, -c:\tinitial chunks minimum size (1024 bytes by default)" << std::endl;
-
-      exit(0);
+      printHelpAndExit();
       break;
 
     case 'i': cfg.input_path = optarg; break;
@@ -55,6 +59,10 @@ inline Config parseOptions(int argc, char* argv[]) {
       std::cout << "invalid option provided" << std::endl;
       break;
     }
+  }
+
+  if (cfg.input_path == "") {
+      printHelpAndExit();
   }
 
   if (cfg.output_path == "") {
