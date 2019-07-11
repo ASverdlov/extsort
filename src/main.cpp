@@ -26,9 +26,8 @@ Chunk mergeAndSaveToTemp(Chunks chunks_to_merge) {
   int start = chunks_to_merge.front().start;
   int end = chunks_to_merge.back().end;
 
-  Chunk temp_chunk(to_temp_path, start, end);
   Chunk out_chunk(to_temp_path, start, end);
-  merge(chunks_to_merge, temp_chunk, out_chunk);
+  merge(chunks_to_merge, out_chunk);
 
   return out_chunk;
 }

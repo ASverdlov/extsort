@@ -34,10 +34,9 @@ TEST(MergerTest, Merge) {
   chunks.emplace_back(source_dir + "/assets/a.txt", 0, 8);
   chunks.emplace_back(source_dir + "/assets/b.txt", 0, 8);
 
-  Chunk tmp_chunk(source_dir + "/assets/merged_tmp.txt", 0, 16);
   Chunk out_chunk(source_dir + "/assets/merged.txt", 0, 16);
 
-  merge(chunks, tmp_chunk, out_chunk);
+  merge(chunks, out_chunk);
 
   File outfile(source_dir + "/assets/merged.txt", "r");
 

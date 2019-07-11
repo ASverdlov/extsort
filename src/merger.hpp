@@ -24,8 +24,7 @@ using ChunkLine = pair<string, int>;
 using FilePointer = shared_ptr<File>;
 using FilePointers = vector<FilePointer>;
 
-// TODO: add context parameter
-inline void merge(Chunks& chunks, Chunk& temp_chunk, Chunk& out_chunk) {
+inline void merge(Chunks& chunks, Chunk& out_chunk) {
   assert(chunks.size() > 0);
 
   FilePointers file_ptrs;
@@ -34,8 +33,8 @@ inline void merge(Chunks& chunks, Chunk& temp_chunk, Chunk& out_chunk) {
     file_ptrs.back()->seek(c.start);
   }
 
-  File tempfile(temp_chunk.filename, "r+");
-  tempfile.seek(temp_chunk.start);
+  File outfile(out_chunk.filename, "r+");
+  outfile.seek(out_chunk.start);
 
   // take first line of every chunk
   std::set<ChunkLine> chunklines;
@@ -56,7 +55,7 @@ inline void merge(Chunks& chunks, Chunk& temp_chunk, Chunk& out_chunk) {
     FilePointer file_ptr = file_ptrs[id];
     Chunk c = chunks[id];
 
-    tempfile.write(line);
+    outfile.write(line);
 
     // take next line in this chunk
     chunklines.erase(smallest_iter);
@@ -66,19 +65,7 @@ inline void merge(Chunks& chunks, Chunk& temp_chunk, Chunk& out_chunk) {
       chunklines.insert(chunkline);
     }
   }
-  assert(tempfile.pos <= temp_chunk.end);
-
-  // copy from temp chunk to out chunk
-  File outfile(out_chunk.filename, "r+");
-  outfile.seek(out_chunk.start);
-
-  tempfile.flush();
-  tempfile.seek(temp_chunk.start);
-
-  while (tempfile.pos < temp_chunk.end) {
-    string line = tempfile.readLine();
-    outfile.write(line);
-  }
+  assert(outfile.pos <= out_chunk.end);
 }
 
 #endif
