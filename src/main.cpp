@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <string>
-#include <cstdio> // TODO delete
 #include <thread>
 #include <utility>
 
@@ -14,6 +13,9 @@
 using std::string;
 using std::swap;
 
+// we can move the following parameters
+// to some context object, but for the sake of simplicity
+// I've decided leave them here.
 string from_temp_path;
 string to_temp_path;
 
