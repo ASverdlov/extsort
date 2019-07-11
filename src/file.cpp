@@ -36,6 +36,15 @@ File::~File() {
   }
 }
 
+void File::copy(const string& oldfilename, const string& newfilename) {
+  File oldfile(oldfilename, "r");
+  File newfile(newfilename, "w");
+  while (!oldfile.eof()) {
+    string line = oldfile.readLine();
+    newfile.write(line);
+  }
+}
+
 // We use fseek here, which won't be able to go above files > 1GB
 // To fix, we can use open+lseek instead of fopen+fseek.
 void File::seek(int pos) {

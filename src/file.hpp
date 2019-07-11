@@ -9,6 +9,8 @@ struct File {
   File(const string& filename, const char* mode);
   ~File();
 
+  static void copy(const string& oldfilename, const string& newfilename);
+
   string readLine();
   char read();
   void flush();

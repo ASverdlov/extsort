@@ -7,39 +7,58 @@
 #include <string>
 #include <cstdio> // TODO delete
 #include <thread>
+#include <utility>
 
 #include <getopt.h>
 
 using std::string;
+using std::swap;
 
-string temp_path;
+string from_temp_path;
+string to_temp_path;
 
 string input_path;
 string output_path;
 int initial_chunksize = 32768;
 int merge_concurrency = 8192;
 
-Chunk merge_and_write_back(Chunks chunks_to_merge) {
+Chunk mergeAndSaveToTemp(Chunks chunks_to_merge) {
   int start = chunks_to_merge.front().start;
   int end = chunks_to_merge.back().end;
 
-  Chunk temp_chunk(temp_path, start, end);
-  Chunk out_chunk(input_path, start, end);
+  Chunk temp_chunk(to_temp_path, start, end);
+  Chunk out_chunk(to_temp_path, start, end);
   merge(chunks_to_merge, temp_chunk, out_chunk);
 
   return out_chunk;
 }
 
+// returns chunk with the same position
+// but in `from_temp_path` file.
+Chunk substituteFilename(Chunk chunk, const string& filename) {
+  return Chunk(filename, chunk.start, chunk.end);
+}
+
 void run() {
   auto chunks = divide(input_path, initial_chunksize);
-  for (auto c : chunks) {
-    sort(c, c);
+
+  {
+    from_temp_path = tmpnam(nullptr); // TODO move to file.cpp
+    File tmp(from_temp_path, "w");
+    tmp.truncate(chunks.back().end);
   }
 
   {
-    temp_path = tmpnam(nullptr); // TODO move to file.cpp
-    File tempfile(temp_path, "w");
-    tempfile.truncate(chunks.back().end);
+    to_temp_path = tmpnam(nullptr); // TODO move to file.cpp
+    File tmp(to_temp_path, "w");
+    tmp.truncate(chunks.back().end);
+  }
+
+  // sort stage
+  for (auto& chunk : chunks) {
+    auto to_chunk = substituteFilename(chunk, from_temp_path);
+    sort(chunk, to_chunk);
+    chunk = to_chunk;
   }
 
   // merge stage
@@ -54,12 +73,17 @@ void run() {
         ++chunk_id;
       }
 
-      Chunk merged_chunk = merge_and_write_back(chunks_to_merge);
+      Chunk merged_chunk = mergeAndSaveToTemp(chunks_to_merge);
       new_chunks.push_back(merged_chunk);
     }
 
-    chunks = new_chunks;
+    // 2 temporary files are constantly alternating
+    // in terms of who outputs results of merges into who
+    swap(chunks, new_chunks);
+    swap(from_temp_path, to_temp_path);
   }
+
+  File::copy(from_temp_path, output_path);
 }
 
 void parse_options(int argc, char* argv[]) {
@@ -111,6 +135,10 @@ void parse_options(int argc, char* argv[]) {
       std::cout << "invalid option provided" << std::endl;
       break;
     }
+  }
+
+  if (output_path == "") {
+    output_path = input_path;
   }
 }
 
