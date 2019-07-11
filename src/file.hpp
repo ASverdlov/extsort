@@ -11,10 +11,12 @@ struct File {
 
   string readLine();
   char read();
+  void flush();
   bool eof();
   void seek(int pos);
   void advancePast(char c);
   int size();
+  void truncate(int size);
 
   void write(const string& s);
 
