@@ -36,6 +36,13 @@ File::~File() {
   }
 }
 
+string File::createTemporary(int size) {
+    string filepath = tmpnam(nullptr); // TODO move to file.cpp
+    File tmp(filepath, "w");
+    tmp.truncate(size);
+    return filepath;
+}
+
 void File::copy(const string& oldfilename, const string& newfilename) {
   File oldfile(oldfilename, "r");
   File newfile(newfilename, "w");

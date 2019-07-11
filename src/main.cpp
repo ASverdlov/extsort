@@ -41,17 +41,8 @@ Chunk substituteFilename(Chunk chunk, const string& filename) {
 void run() {
   auto chunks = divide(input_path, initial_chunksize);
 
-  {
-    from_temp_path = tmpnam(nullptr); // TODO move to file.cpp
-    File tmp(from_temp_path, "w");
-    tmp.truncate(chunks.back().end);
-  }
-
-  {
-    to_temp_path = tmpnam(nullptr); // TODO move to file.cpp
-    File tmp(to_temp_path, "w");
-    tmp.truncate(chunks.back().end);
-  }
+  from_temp_path = File::createTemporary(chunks.back().end);
+  to_temp_path = File::createTemporary(chunks.back().end);
 
   // sort stage
   for (auto& chunk : chunks) {

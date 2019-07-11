@@ -10,6 +10,7 @@ struct File {
   ~File();
 
   static void copy(const string& oldfilename, const string& newfilename);
+  static string createTemporary(int size);
 
   string readLine();
   char read();
