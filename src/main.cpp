@@ -31,7 +31,7 @@ Chunk merge_and_write_back(Chunks chunks_to_merge) {
   return out_chunk;
 }
 
-void run_threads() {
+void run() {
   auto chunks = divide(input_path, INITIAL_CHUNKSIZE);
   for (auto c : chunks) {
     sort(c, c);
@@ -102,6 +102,6 @@ void parse_options(int argc, char* argv[]) {
 
 int main(int argc, char* argv[]) {
   parse_options(argc, argv);
-  run_threads();
+  run();
   return 0;
 }
