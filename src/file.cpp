@@ -47,6 +47,12 @@ void File::seek(int pos) {
   this->buffer_pos = 0;
 }
 
+void File::truncate(int size) {
+  File::seek(size - 1);
+  fputc('\0', this->file);
+  this->throw_on_libc_error("File::truncate(): error during fputc()");
+}
+
 int File::size() {
   return this->filesize;
 }
@@ -74,6 +80,11 @@ char File::read() {
   ++this->buffer_pos;
 
   return c;
+}
+
+void File::flush() {
+  fflush(this->file);
+  this->throw_on_libc_error("File::flush(): error during fflush()");
 }
 
 string File::readLine() {
