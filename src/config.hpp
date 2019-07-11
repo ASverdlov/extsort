@@ -5,9 +5,6 @@
 #include <getopt.h>
 
 struct Config {
-  string from_temp_path;
-  string to_temp_path;
-
   string input_path;
   string output_path;
 
