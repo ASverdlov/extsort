@@ -10,7 +10,7 @@
 
 ## Сборка
 ```bash
-git submodule update --sync
+git submodule update --init --recursive
 mkdir build && cd build
 cmake .. && make
 ```
