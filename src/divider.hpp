@@ -6,6 +6,7 @@
 
 #include <iostream> // TODO: delete
 
+using std::min;
 using std::string;
 using Chunks = std::vector<Chunk>;
 
@@ -23,10 +24,13 @@ inline Chunks divide(const string& filename, int chunksize) {
 
   int pos = 0;
   while (pos < filesize) {
-    int nextpos = advancePastNewline(r, pos + chunksize);
+    int nextpos = min(pos + chunksize, filesize);
+    nextpos = advancePastNewline(r, nextpos);
+
     chunks.emplace_back(filename, pos, nextpos);
     pos = nextpos;
   }
+  assert(chunks.back().end == filesize);
 
   return chunks;
 }
