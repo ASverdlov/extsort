@@ -110,25 +110,10 @@ void parse_options(int argc, char* argv[]) {
       exit(0);
       break;
 
-    case 'i':
-      std::cout << "-i provided: " << string(optarg) << std::endl;
-      input_path = optarg;
-      break;
-
-    case 'o':
-      std::cout << "-o provided: " << string(optarg) << std::endl;
-      output_path = optarg;
-      break;
-
-    case 'm':
-      std::cout << "-m provided: " << string(optarg) << std::endl;
-      merge_concurrency = atoi(optarg);
-      break;
-
-    case 'c':
-      std::cout << "-c provided: " << string(optarg) << std::endl;
-      initial_chunksize = atoi(optarg);
-      break;
+    case 'i': input_path = optarg; break;
+    case 'o': output_path = optarg; break;
+    case 'm': merge_concurrency = atoi(optarg); break;
+    case 'c': initial_chunksize = atoi(optarg); break;
 
     default:
       std::cout << "invalid option provided" << std::endl;
